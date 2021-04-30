@@ -1,0 +1,41 @@
+{
+  "name": "@cloudedots/svelte-forms",
+  "version": "1.0.0",
+  "description": "Svelte Forms Library",
+  "main": "dist/index.js",
+  "types": "types/index.d.ts",
+  "type": "module",
+  "scripts": {
+    "build": "tsc && tsc --declaration --emitDeclarationOnly --outDir types",
+    "build:watch": "tsc -w",
+    "test": "node ./test",
+    "prepack": "npm run build"
+  },
+  "files": [
+    "dist",
+    "types"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/cloudedots-projects/svelte-forms.git"
+  },
+  "keywords": [
+    "svelte",
+    "form",
+    "svelte-forms",
+    "validation"
+  ],
+  "author": "Dhyey Moliya <dhyeymoliya@gmail.com>",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/cloudedots-projects/svelte-forms/issues"
+  },
+  "homepage": "https://github.com/cloudedots-projects/svelte-forms#readme",
+  "devDependencies": {
+    "typescript": "^4.2.4",
+    "yup": "^0.32.9"
+  },
+  "dependencies": {
+    "svelte": "^3.37.0"
+  }
+}
