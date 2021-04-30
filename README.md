@@ -16,7 +16,7 @@ npm install @cloudedots/svelte-forms yup
 
 ## Basic Usage Example
 
-_App.svelte_ :
+_[demo/Basic.svelte](https://github.com/cloudedots-projects/svelte-forms/blob/master/demo/Basic.svelte)_ :
 
 ```html
 <script>
@@ -27,7 +27,7 @@ _App.svelte_ :
     const { form, formControl, isValid } = createForm({
         // Initial Form Data
         initialValues: {
-            email: ''
+            email: '',
             password: '',
         },
         // Form Validation using Yup
@@ -63,26 +63,26 @@ _App.svelte_ :
 
 ## Full Usage Example
 
-_App.svelte_ :
+_[demo/Full.svelte](https://github.com/cloudedots-projects/svelte-forms/blob/master/demo/Full.svelte)_ :
 
 ```html
 <script lang="ts">
   import { createForm } from "@cloudedots/svelte-forms";
   import * as yup from "yup";
-  import UserForm from "./UserForm.svelte"; // Components
+  import UserAddressForm from "./UserAddressForm.svelte"; // Components
 
   // (Optional) Form's Data type will be automatically inferred from "initialValues" in "createForm" if type of Data is not specified
   type FormData = {
-    title: string;
-    description: string;
+    title: string,
+    description: string,
     users: {
-      name: string;
-      email: string;
+      name: string,
+      email: string,
       address: {
-        state: string;
-        city: string;
-      };
-    }[];
+        state: string,
+        city: string,
+      },
+    }[],
   };
 
   // Create Form Instance
@@ -96,7 +96,7 @@ _App.svelte_ :
     setTouched, // Function() for manually setting Form state as "touched"
     updateForm, // Function() for updating Form's Structure after Form Controls are Added or Removed in cases like Form Arrays
     formControl, // Svelte Action to be used with <input>, <select>, <textarea> or similar HTML input elements
-  } = createForm({
+  } = createForm<FormData>({
     // Initial Values of Form
     initialValues: {
       title: "", // Simple String
@@ -153,7 +153,7 @@ _App.svelte_ :
     console.log($form); // Get Form Data
   };
 
-  $: console.log({ $form, $state }); // Log Form Data and Form State on every Change
+  $: console.log($form, $state); // Log Form Data and Form State on every Change
 </script>
 
 <form on:submit|preventDefault="{onSubmit}">
@@ -192,7 +192,7 @@ _App.svelte_ :
 
         <input
             placeholder="name"
-            name="users[{i}].name"
+            name="users[{index}].name"
             bind:value="{user.name}"
             use:formControl
         />
@@ -204,7 +204,7 @@ _App.svelte_ :
 
         <input
             placeholder="email"
-            name="users[{i}].email"
+            name="users[{index}].email"
             bind:value="{user.email}"
             use:formControl
         />
@@ -248,7 +248,7 @@ _App.svelte_ :
 </style>
 ```
 
-_UserAddressForm.svelte_ :
+_[demo/UserAddressForm.svelte](https://github.com/cloudedots-projects/svelte-forms/blob/master/demo/UserAddressForm.svelte)_ :
 
 ```html
 <script lang="ts">
