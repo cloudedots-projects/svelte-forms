@@ -5,7 +5,6 @@
   "main": "dist/index.js",
   "types": "types/index.d.ts",
   "type": "module",
-  "private": "false",
   "scripts": {
     "build": "tsc && tsc --declaration --emitDeclarationOnly --outDir types",
     "build:watch": "tsc -w",
