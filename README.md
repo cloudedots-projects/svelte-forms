@@ -43,21 +43,21 @@ _[demo/Basic.svelte](https://github.com/cloudedots-projects/svelte-forms/blob/ma
     }
 </script>
 
-<form on:submit|preventDefault="{onSubmit}">
+<form on:submit|preventDefault={onSubmit}>
     <input 
         type="text" 
         name="email" 
-        bind:value="{$form.email}" 
+        bind:value={$form.email}
         use:formControl 
     />
     <input
         type="password"
         name="password"
-        bind:value="{$form.password}"
+        bind:value={$form.password}
         use:formControl
     />
     
-    <button type="submit" disabled="{!$isValid}">Submit</button>
+    <button type="submit" disabled={!$isValid}>Submit</button>
 </form>
 ```
 
@@ -156,12 +156,12 @@ _[demo/Full.svelte](https://github.com/cloudedots-projects/svelte-forms/blob/mas
   $: console.log($form, $state); // Log Form Data and Form State on every Change
 </script>
 
-<form on:submit|preventDefault="{onSubmit}">
+<form on:submit|preventDefault={onSubmit}>
 
     <input
         placeholder="Title"
         name="title"
-        bind:value="{$form.title}"
+        bind:value={$form.title}
         use:formControl
     />
     {#if $state.title._errors?.length}
@@ -173,7 +173,7 @@ _[demo/Full.svelte](https://github.com/cloudedots-projects/svelte-forms/blob/mas
     <input
         placeholder="Description"
         name="description"
-        bind:value="{$form.description}"
+        bind:value={$form.description}
         use:formControl
     />
     {#if $state.description._errors?.length}
@@ -185,7 +185,7 @@ _[demo/Full.svelte](https://github.com/cloudedots-projects/svelte-forms/blob/mas
     {#each $form.users as user, index}
         <h2>
             User {user.name}
-            <button type="button" on:click="{removeUser(i)}">
+            <button type="button" on:click={removeUser(i)}>
                 Remove User
             </button>
         </h2>
@@ -193,7 +193,7 @@ _[demo/Full.svelte](https://github.com/cloudedots-projects/svelte-forms/blob/mas
         <input
             placeholder="name"
             name="users[{index}].name"
-            bind:value="{user.name}"
+            bind:value={user.name}
             use:formControl
         />
         {#if $state.users[index].name._errors?.length}
@@ -205,7 +205,7 @@ _[demo/Full.svelte](https://github.com/cloudedots-projects/svelte-forms/blob/mas
         <input
             placeholder="email"
             name="users[{index}].email"
-            bind:value="{user.email}"
+            bind:value={user.email}
             use:formControl
         />
         {#if $state.users[index].email._errors?.length}
@@ -261,7 +261,7 @@ _[demo/UserAddressForm.svelte](https://github.com/cloudedots-projects/svelte-for
 <input
     type="text"
     placeholder="State"
-    bind:value="{$form.users[index].address.state}"
+    bind:value={$form.users[index].address.state}
     name="users[{index}].address.state"
     use:formControl
 />
@@ -274,7 +274,7 @@ _[demo/UserAddressForm.svelte](https://github.com/cloudedots-projects/svelte-for
 <input
     type="text"
     placeholder="City"
-    bind:value="{$form.users[index].address.city}"
+    bind:value={$form.users[index].address.city}
     name="users[{index}].address.city"
     use:formControl
 />

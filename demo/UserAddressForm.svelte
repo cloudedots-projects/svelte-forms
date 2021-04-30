@@ -8,7 +8,7 @@
 <input
     type="text"
     placeholder="State"
-    bind:value="{$form.users[index].address.state}"
+    bind:value={$form.users[index].address.state}
     name="users[{index}].address.state"
     use:formControl
 />
@@ -21,7 +21,7 @@
 <input
     type="text"
     placeholder="City"
-    bind:value="{$form.users[index].address.city}"
+    bind:value={$form.users[index].address.city}
     name="users[{index}].address.city"
     use:formControl
 />
