@@ -99,7 +99,7 @@ const clearErrors = (state: Writable<FormState> | any, touch = false, inner = fa
     try {
         let data = !inner ? get(state) : state;
         for (let key in data) {
-            if (key !== '_touched' && key !== '_errors' && key !== '_index') {
+            if (key !== '_touched' && key !== '_errors') {
                 if (Array.isArray(data[key])) {
                     let values = (data[key] || []) as any[];
                     data[key] = values.map(
