@@ -26,7 +26,7 @@
     "validation"
   ],
   "author": "Dhyey Moliya <dhyeymoliya@gmail.com>",
-  "license": "ISC",
+  "license": "MIT",
   "bugs": {
     "url": "https://github.com/cloudedots-projects/svelte-forms/issues"
   },

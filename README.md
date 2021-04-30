@@ -303,4 +303,4 @@ Give a ⭐️ if this project helped you!
 
 Copyright © 2021 [Cloudedots <contact@cloudedots.com>](https://github.com/cloudedots-projects).
 
-This project is [ISC](https://github.com/cloudedots-projects/svelte-forms/blob/master/LICENSE) licensed.
+This project is [MIT](https://github.com/cloudedots-projects/svelte-forms/blob/master/LICENSE.md) licensed.
