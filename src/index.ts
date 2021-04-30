@@ -13,12 +13,15 @@ type FormState = {
 type FormConfigInput<Data = any> = {
     initialValues: Data,
     validationSchema?: ObjectSchema<any>,
-    validationClasses?: {
-        valid?: string,
-        invalid?: string,
-        showValid?: boolean,
-        showInvalid?: boolean,
-    },
+    css?: {
+        enabled?: boolean,
+        validClass?: string,
+        invalidClass?: string,
+        useValid?: boolean,
+        useInvalid?: boolean,
+    }
+    validateOnChange?: boolean,
+    validateOnBlur?: boolean,
 };
 
 function isNullish(value) {
@@ -220,17 +223,23 @@ const getFieldState = (name: string, $state: FormState) => {
     return obj[lastSegment] || null;
 }
 
-export function createForm<Data>({ initialValues, validationSchema, validationClasses }: FormConfigInput<Data>) {
+export function createForm<Data>({ initialValues, validationSchema, css: cssConfig, validateOnChange, validateOnBlur }: FormConfigInput<Data>) {
     const form = writable<Data>(initialValues);
     const state = writable<FormState>({});
     const isValid = writable<boolean>(false);
     const isTouched = writable<boolean>(false);
-    const classes = Object.assign({
-        valid: 'is-valid',
-        invalid: 'is-invalid',
-        showValid: true,
-        showInvalid: true,
-    }, validationClasses || {});
+    const css = {
+        ...{
+            enabled: true,
+            validClass: 'is-valid',
+            invalidClass: 'is-invalid',
+            useValid: true,
+            useInvalid: true,
+        }, ...(cssConfig || {})
+    };
+    validateOnChange = typeof validateOnChange !== 'boolean' ? true : validateOnChange;
+    validateOnBlur = typeof validateOnBlur !== 'boolean' ? true : validateOnBlur;
+    const cssValidator = writable<number>(0);
 
     createState(initialValues, state, validationSchema);
 
@@ -241,6 +250,7 @@ export function createForm<Data>({ initialValues, validationSchema, validationCl
 
     const validateForm = (highlight: 'none' | 'errors' | 'all' = 'none') => {
         isValid.set(validate(form, validationSchema, state, highlight === 'all', highlight === 'all' || highlight === 'errors'));
+        css.enabled && !validateOnChange && highlight !== 'none' && cssValidator.update(val => val + 1);
     }
 
     form.subscribe(() => {
@@ -258,41 +268,56 @@ export function createForm<Data>({ initialValues, validationSchema, validationCl
     }
 
     const formControl = (node: HTMLInputElement, options: any = {}) => {
-        const changeListender = (event: Event) => {
-            handleChange(event);
+        const changeListener = (event: Event) => {
+            if (validateOnChange) {
+                handleChange(event);
+                css.enabled && checkValidity(get(state));
+            }
+        }
+        const blurListener = (event: Event) => {
+            if (validateOnBlur) {
+                handleChange(event);
+                css.enabled && checkValidity(get(state));
+            }
         }
         let unsubscribeState: Unsubscriber = null;
+        let unsubscribeCssValidator: Unsubscriber = null;
 
         const checkValidity = async ($state: FormState) => {
-            const fieldState = getFieldState(node.name, $state);
-            const invalid = fieldState?._touched && !!fieldState?._errors?.length;
-            const valid = fieldState?._touched && !fieldState?._errors?.length;
-            node.classList.remove(classes.valid);
-            node.classList.remove(classes.invalid);
-            if (invalid) {
-                classes.showInvalid && node.classList.add(classes.invalid);
-            } else if (valid) {
-                classes.showValid && node.classList.add(classes.valid);
+            if (node.name) {
+                const fieldState = getFieldState(node.name, $state);
+                const invalid = fieldState?._touched && !!fieldState?._errors?.length;
+                const valid = fieldState?._touched && !fieldState?._errors?.length;
+                node.classList.remove(css.validClass);
+                node.classList.remove(css.invalidClass);
+                if (invalid) {
+                    css.useInvalid && node.classList.add(css.invalidClass);
+                } else if (valid) {
+                    css.useValid && node.classList.add(css.validClass);
+                }
             }
-
         }
 
         if (['input', 'checkbox', 'radio', 'select', 'textarea'].includes(node.tagName)
             || node.contentEditable) {
-            node.addEventListener('change', changeListender);
-            node.addEventListener('blur', changeListender);
+            node.addEventListener('change', changeListener);
+            node.addEventListener('blur', blurListener);
+
             if (node.name) {
                 unsubscribeState = state.subscribe($state => {
-                    checkValidity($state);
+                    css.enabled && validateOnChange && checkValidity($state);
+                });
+                unsubscribeCssValidator = cssValidator.subscribe(() => {
+                    checkValidity(get(state));
                 });
             }
         }
         return {
-            update(options: any = {}) { },
             destroy() {
-                node.removeEventListener('change', changeListender);
-                node.removeEventListener('blur', changeListender);
+                node.removeEventListener('change', changeListener);
+                node.removeEventListener('blur', blurListener);
                 unsubscribeState && unsubscribeState();
+                unsubscribeCssValidator && unsubscribeCssValidator();
             }
         }
     }

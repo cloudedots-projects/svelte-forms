@@ -50,12 +50,16 @@
         })
       ),
     }),
-    validationClasses: {
-      valid: "is-valid", // CSS class added to valid form controls
-      invalid: "is-invalid", // CSS class added to invalid form controls
-      showValid: true, // Add CSS classes to valid form controls
-      showInvalid: true, // Add CSS classes to invalid form controls
+    // CSS class
+    css: {
+      enabled: true, // use CSS classes or not
+      validClass: "is-valid", // CSS class added to valid form controls
+      invalidClass: "is-invalid", // CSS class added to invalid form controls
+      useValid: true, // Add CSS classes to valid form controls
+      useInvalid: true, // Add CSS classes to invalid form controls
     },
+    validateOnChange: true, // Whether to validate on "change" event of element and form value change
+    validateOnBlur: true, // Whether to validate on "blur" event of element
   });
 
   // Add new user to Users Form Array
@@ -159,11 +163,11 @@
 </form>
 
 <style>
-  .valid {
+  .is-valid {
     border: 1px solid green;
   }
 
-  .invalid {
+  .is-invalid {
     border: 1px solid red;
   }
 
