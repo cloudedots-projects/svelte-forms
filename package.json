@@ -1,6 +1,6 @@
 {
   "name": "@cloudedots/svelte-forms",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "description": "Svelte Forms Library",
   "main": "dist/index.js",
   "types": "types/index.d.ts",
