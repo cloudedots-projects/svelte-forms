@@ -258,7 +258,7 @@ export function createForm<Data>({ initialValues, validationSchema, css: cssConf
     });
 
     const handleChange = (event: Event) => {
-        const target = event?.target as HTMLInputElement;
+        const target = event?.target as HTMLElement & { name: string };
         target.name && updateFieldTouched(target.name, state);
         isTouched.set(true);
     }
@@ -267,7 +267,7 @@ export function createForm<Data>({ initialValues, validationSchema, css: cssConf
         isTouched.set(state);
     }
 
-    const formControl = (node: HTMLInputElement, options: any = {}) => {
+    const formControl = (node: HTMLElement & { name: string }, options: any = {}) => {
         const changeListener = (event: Event) => {
             if (validateOnChange) {
                 handleChange(event);
