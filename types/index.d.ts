@@ -29,7 +29,9 @@ export declare function createForm<Data>({ initialValues, validationSchema, css:
     handleChange: (event: Event) => void;
     updateForm: () => Promise<void>;
     setTouched: (state: boolean) => void;
-    formControl: (node: HTMLInputElement, options?: any) => {
+    formControl: (node: HTMLElement & {
+        name: string;
+    }, options?: any) => {
         destroy(): void;
     };
 };
