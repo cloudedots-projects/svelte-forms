@@ -75,6 +75,7 @@ _[demo/Full.svelte](https://github.com/cloudedots-projects/svelte-forms/blob/mas
   type FormData = {
     title: string,
     description: string,
+    coverImage: FileList,
     users: {
       name: string,
       email: string,
@@ -101,12 +102,14 @@ _[demo/Full.svelte](https://github.com/cloudedots-projects/svelte-forms/blob/mas
     initialValues: {
       title: "", // Simple String
       description: "", // Simple String
+      coverImage: "", // File Input
       users: [], // Complex Form Array
     },
     // Yup Validation Schema
     validationSchema: yup.object().shape({
       title: yup.string().min(8).required(),
       description: yup.string(),
+      coverImage: yup.mixed().test(value => value?.length > 0), // Custom validation because yup does not suport file objects
       users: yup.array().of({
         name: yup.string().required(),
         email: yup.string().email().required(),
@@ -184,6 +187,27 @@ _[demo/Full.svelte](https://github.com/cloudedots-projects/svelte-forms/blob/mas
         {#each $state.description._errors as error}
             <span class="error">{error}</span>
         {/each}
+    {/if}
+
+    <input
+        name="coverImage"
+        accept="image/*"
+        bind:files={$form.coverImage}
+        use:formControl
+    />
+    {#if $state.coverImage._errors?.length}
+        {#each $state.coverImage._errors as error}
+        <span class="error">{error}</span>
+        {/each}
+    {/if}
+
+    {#if $form.coverImage?.length}
+        <div class="image-preview">
+            <img
+            src={URL.createObjectURL($form.coverImage[0])}
+            alt="Cover"
+            height="150" />
+        </div>
     {/if}
 
     {#each $form.users as user, index}
