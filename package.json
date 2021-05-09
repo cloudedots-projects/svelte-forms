@@ -1,9 +1,10 @@
 {
   "name": "@cloudedots/svelte-forms",
-  "version": "1.0.5",
+  "version": "1.0.6",
   "description": "Svelte Forms Library",
   "main": "dist/index.js",
   "types": "types/index.d.ts",
+  "svelte": "dist/index.js",
   "type": "module",
   "scripts": {
     "build": "tsc && npm run types",
@@ -37,6 +38,6 @@
     "yup": "^0.32.9"
   },
   "dependencies": {
-    "svelte": "^3.37.0"
+    "svelte": "^3.38.2"
   }
 }
