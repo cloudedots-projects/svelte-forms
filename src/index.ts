@@ -240,6 +240,7 @@ export function createForm<Data>({ initialValues, validationSchema, css: cssConf
     validateOnChange = typeof validateOnChange !== 'boolean' ? true : validateOnChange;
     validateOnBlur = typeof validateOnBlur !== 'boolean' ? true : validateOnBlur;
     const cssValidator = writable<number>(0);
+    const validationReset = writable<number>(0);
 
     createState(initialValues, state, validationSchema);
 
@@ -251,6 +252,17 @@ export function createForm<Data>({ initialValues, validationSchema, css: cssConf
     const validateForm = (highlight: 'none' | 'errors' | 'all' = 'none') => {
         isValid.set(validate(form, validationSchema, state, highlight === 'all', highlight === 'all' || highlight === 'errors'));
         css.enabled && !validateOnChange && highlight !== 'none' && cssValidator.update(val => val + 1);
+    }
+
+    const resetForm = (newValue?: Data) => {
+        if (newValue) {
+            form.set(newValue);
+        }
+        state.set({});
+        isValid.set(false);
+        isTouched.set(false);
+        createState(get(form), state, validationSchema);
+        validationReset.update(val => val + 1);
     }
 
     form.subscribe(() => {
@@ -282,6 +294,7 @@ export function createForm<Data>({ initialValues, validationSchema, css: cssConf
         }
         let unsubscribeState: Unsubscriber = null;
         let unsubscribeCssValidator: Unsubscriber = null;
+        let unsubscribeValidationReset: Unsubscriber = null;
 
         const checkValidity = async ($state: FormState) => {
             if (node.name) {
@@ -310,6 +323,10 @@ export function createForm<Data>({ initialValues, validationSchema, css: cssConf
                 unsubscribeCssValidator = cssValidator.subscribe(() => {
                     checkValidity(get(state));
                 });
+                unsubscribeValidationReset = validationReset.subscribe(() => {
+                    node.classList.remove(css.validClass);
+                    node.classList.remove(css.invalidClass);
+                })
             }
         }
         return {
@@ -318,6 +335,7 @@ export function createForm<Data>({ initialValues, validationSchema, css: cssConf
                 node.removeEventListener('blur', blurListener);
                 unsubscribeState && unsubscribeState();
                 unsubscribeCssValidator && unsubscribeCssValidator();
+                unsubscribeValidationReset && unsubscribeValidationReset();
             }
         }
     }
@@ -332,5 +350,6 @@ export function createForm<Data>({ initialValues, validationSchema, css: cssConf
         updateForm,
         setTouched,
         formControl,
+        resetForm
     };
 }

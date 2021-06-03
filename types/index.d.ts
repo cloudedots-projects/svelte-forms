@@ -34,5 +34,6 @@ export declare function createForm<Data>({ initialValues, validationSchema, css:
     }, options?: any) => {
         destroy(): void;
     };
+    resetForm: (newValue?: Data) => void;
 };
 export {};

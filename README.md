@@ -97,6 +97,7 @@ _[demo/Full.svelte](https://github.com/cloudedots-projects/svelte-forms/blob/mas
     setTouched, // Function() for manually setting Form state as "touched"
     updateForm, // Function() for updating Form's Structure after Form Controls are Added or Removed in cases like Form Arrays
     formControl, // Svelte Action to be used with <input>, <select>, <textarea> or similar HTML input elements
+    resetForm, // Reset the Form with optional new value and clear validation
   } = createForm<FormData>({
     // Initial Values of Form
     initialValues: {
@@ -158,6 +159,13 @@ _[demo/Full.svelte](https://github.com/cloudedots-projects/svelte-forms/blob/mas
   // Submit Form
   const onSubmit = () => {
     console.log($form); // Get Form Data
+    // Reset form after submit
+    resetForm({
+      title: "",
+      description: "",
+      coverImage: "",
+      users: [],
+    });
   };
 
   $: console.log($form, $state); // Log Form Data and Form State on every Change
