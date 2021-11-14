@@ -1,3 +1,5 @@
+# This package has been `deprecated`in favour of [svelte-form-validation](https://npmjs.org/package/svelte-form-validation)
+
 # Welcome to @cloudedots/svelte-forms 👋
 
 [![NPM Version](https://img.shields.io/npm/v/@cloudedots/svelte-forms.svg?orange=blue)](https://npmjs.org/package/@cloudedots/svelte-forms)
@@ -20,44 +22,39 @@ _[demo/Basic.svelte](https://github.com/cloudedots-projects/svelte-forms/blob/ma
 
 ```html
 <script>
-    import { createForm } from "@cloudedots/svelte-forms";
-    import * as yup from "yup";
+  import { createForm } from "@cloudedots/svelte-forms";
+  import * as yup from "yup";
 
-    // Create Form Instance
-    const { form, formControl, isValid } = createForm({
-        // Initial Form Data
-        initialValues: {
-            email: '',
-            password: '',
-        },
-        // Form Validation using Yup
-        validationSchema: yup.object().shape({
-            email: yup.string().email().required(),
-            password: yup.string().min(6).required()
-        })
-    });
+  // Create Form Instance
+  const { form, formControl, isValid } = createForm({
+    // Initial Form Data
+    initialValues: {
+      email: "",
+      password: "",
+    },
+    // Form Validation using Yup
+    validationSchema: yup.object().shape({
+      email: yup.string().email().required(),
+      password: yup.string().min(6).required(),
+    }),
+  });
 
-    const onSubmit = () => {
-        // "$form" contains current Form Data
-        console.log($form);
-    }
+  const onSubmit = () => {
+    // "$form" contains current Form Data
+    console.log($form);
+  };
 </script>
 
-<form on:submit|preventDefault={onSubmit}>
-    <input 
-        type="text" 
-        name="email" 
-        bind:value={$form.email}
-        use:formControl 
-    />
-    <input
-        type="password"
-        name="password"
-        bind:value={$form.password}
-        use:formControl
-    />
-    
-    <button type="submit" disabled={!$isValid}>Submit</button>
+<form on:submit|preventDefault="{onSubmit}">
+  <input type="text" name="email" bind:value="{$form.email}" use:formControl />
+  <input
+    type="password"
+    name="password"
+    bind:value="{$form.password}"
+    use:formControl
+  />
+
+  <button type="submit" disabled="{!$isValid}">Submit</button>
 </form>
 ```
 
@@ -262,7 +259,7 @@ _[demo/Full.svelte](https://github.com/cloudedots-projects/svelte-forms/blob/mas
     <button type="button" on:click={() => validateForm('errors')}>
         Validate Form
     </button>
-    
+
     <button type="submit" disabled={!$isValid}>
         Submit
     </button>
@@ -288,37 +285,35 @@ _[demo/UserAddressForm.svelte](https://github.com/cloudedots-projects/svelte-for
 
 ```html
 <script lang="ts">
-    export let form: any;
-    export let state: any;
-    export let formControl;
-    export let index: number;
+  export let form: any;
+  export let state: any;
+  export let formControl;
+  export let index: number;
 </script>
 
 <input
-    type="text"
-    placeholder="State"
-    bind:value={$form.users[index].address.state}
-    name="users[{index}].address.state"
-    use:formControl
+  type="text"
+  placeholder="State"
+  bind:value="{$form.users[index].address.state}"
+  name="users[{index}].address.state"
+  use:formControl
 />
-{#if $state.users[index].address.state._errors?.length} 
-    {#each $state.users[index].address.state._errors as error}
-        <span class="error">{error}</span>
-    {/each} 
-{/if}
+{#if $state.users[index].address.state._errors?.length} {#each
+$state.users[index].address.state._errors as error}
+<span class="error">{error}</span>
+{/each} {/if}
 
 <input
-    type="text"
-    placeholder="City"
-    bind:value={$form.users[index].address.city}
-    name="users[{index}].address.city"
-    use:formControl
+  type="text"
+  placeholder="City"
+  bind:value="{$form.users[index].address.city}"
+  name="users[{index}].address.city"
+  use:formControl
 />
-{#if $state.users[index].address.city._errors?.length} 
-    {#each $state.users[index].address.city._errors as error}
-        <span class="error">{error}</span>
-    {/each} 
-{/if}
+{#if $state.users[index].address.city._errors?.length} {#each
+$state.users[index].address.city._errors as error}
+<span class="error">{error}</span>
+{/each} {/if}
 ```
 
 ## 🤝 Contributing
